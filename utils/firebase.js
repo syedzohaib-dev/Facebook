@@ -1,0 +1,34 @@
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs, deleteDoc} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    // 
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdQXOaSg2qOhek7RNwDeShk2jlhVnDH64",
+        authDomain: "fir-authentication-1a877.firebaseapp.com",
+        projectId: "fir-authentication-1a877",
+        storageBucket: "fir-authentication-1a877.appspot.com",
+        messagingSenderId: "580874850390",
+        appId: "1:580874850390:web:f220bbabf4deee709b6bf7"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const getMultipleDataFromFirebase = async (collectionName) => {
+
+        const q = query(collection(db, collectionName))  //, where("capital", "==", true));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());    
+        });
+    }
+
+
+
+
+    export { auth, db, getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs, deleteDoc, getMultipleDataFromFirebase }   
