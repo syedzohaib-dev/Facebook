@@ -16,19 +16,10 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+  
 
-    const getMultipleDataFromFirebase = async (collectionName) => {
-
-        const q = query(collection(db, collectionName))  //, where("capital", "==", true));
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());    
-        });
-    }
+   
 
 
 
-
-    export { auth, db, getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs, deleteDoc, getMultipleDataFromFirebase }   
+    export { auth, db, getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs, deleteDoc,  }   

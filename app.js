@@ -1,5 +1,8 @@
-import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, getMultipleDataFromFirebase } from './utils/firebase.js'
+import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs } from './utils/firebase.js'
 let userDetail;
+let userImg;
+let userName;
+
 const auth = getAuth();
 
 let logoutBtn = document.getElementById('logoutBtn')
@@ -31,10 +34,13 @@ onAuthStateChanged(auth, async (user) => {
 
         const { email, name, url } = docSnap.data()
         console.log(email, name, url)
-
+        userImg = url
+        userName = name
 
         let userImgIcon = document.getElementById('userImgIcon')
         userImgIcon.src = url
+        let inputKaLogo = document.getElementById('inputKaLogo')
+        inputKaLogo.src = url
         document.getElementById('navusername').innerHTML = name
 
         if (docSnap.exists()) {
@@ -43,8 +49,9 @@ onAuthStateChanged(auth, async (user) => {
             // docSnap.data() will be undefined in this case
             console.log("No such document!");
         }
+        getUserPost(userDetail.uid)
 
-        fetchPostFromFirebase()
+
 
         // ... 
     } else {
@@ -61,11 +68,12 @@ inputBtn.addEventListener('click', async (e) => {
     e.preventDefault()
     let inputText = document.getElementById('inputText').value
     let inputUrl = document.getElementById('inputUrl').value
-    console.log(inputText, inputUrl, userDetail.uid)
+    console.log(inputText, inputUrl, userDetail.uid, userImg, userName)
     let current = new Date()
     let localDate = current.toLocaleString()
     console.log(localDate)
 
+    console.log(userImg)
 
     try {
         await addDoc(collection(db, "users", userDetail.uid, 'posts'), {
@@ -73,6 +81,9 @@ inputBtn.addEventListener('click', async (e) => {
             inputUrl: inputUrl,
             localDate: localDate,
             createdBy: userDetail.uid,
+            userImg: userImg,
+            userName: userName,
+
             // console.log(inputText, inputUrl, localDate)
         }, { merge: true });
     } catch (error) {
@@ -81,15 +92,51 @@ inputBtn.addEventListener('click', async (e) => {
 })
 // console.log(userDetail)
 
-const fetchPostFromFirebase = async () => {
-    console.log("FETCHING POST FROM FIREBASE")
+const getUserPost = async (userDetail) => {
     try {
-        const getPostFromFirebase = await getMultipleDataFromFirebase(`users/${userDetail.uid}/posts`)
-        console.log(getPostFromFirebase)    
+        const postsRef = collection(db, 'users', userDetail, 'posts');
+        const querySnapShot = await getDocs(postsRef)
+        querySnapShot.forEach((doc) => {
+            console.log(doc.data(), "Post ka data");
+            // const { postKiImg } = doc.data()
+            // console.log(postKiImg)
+            document.getElementById('mainContainerPost').innerHTML += `
+             <div class="post">
+                <div class="topLine">
+                    <div class="userorname">
+                        <div class="userLogoPost"><img
+                                src="${doc.data().userImg}"
+                                alt=""></div>
+                        <div class="userName">
+                            <p class="postCreater">${doc.data().userName}</p>
+                            <p class="postTime">${doc.data().localDate}</p>
+                        </div>
+                    </div>
+                    <div class="function">
+                        <div class="editPost"><button type="button" class="editPostBtn"><i
+                                    class="fa-solid fa-ellipsis"></i></button></div>
+                        <div class="deletePost"><button type="button" class="deletePostBtn"><i
+                                    class="fa-solid fa-xmark"></i></button> </div>
+                    </div>
+                </div>
+                <div class="postText">
+                    <p>${doc.data().inputText}</p>
+                </div>
+                <div class="postImg">   <img class="img-fluid" src="${doc.data().inputUrl}" alt="">
+                          </div>
+                <div class="bottomLine">
+                    <div class="likePost"><i class="fa-regular fa-thumbs-up" style="font-size: 1.4rem;"></i> Like</div>
+                    <div class="commentPost"><i class="fa-regular fa-comment" style="font-size: 1.4rem;"></i> Comment
+                    </div>
+                    <div class="sharePost"><i class="fa-solid fa-share" style="font-size: 1.4rem;"></i> Share</div>
+                </div>
+            </div>
+            
+            `
+        })
     } catch (error) {
         console.log(error)
+        console.log(error.message)
     }
 
 }
-
-
