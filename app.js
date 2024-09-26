@@ -1,7 +1,8 @@
-import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs } from './utils/firebase.js'
+import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs, deleteDoc } from './utils/firebase.js'
 let userDetail;
 let userImg;
 let userName;
+let postUid;
 
 const auth = getAuth();
 
@@ -98,6 +99,10 @@ const getUserPost = async (userDetail) => {
         const querySnapShot = await getDocs(postsRef)
         querySnapShot.forEach((doc) => {
             console.log(doc.data(), "Post ka data");
+
+            postUid = userDetail
+            console.log(postUid)
+
             // const { postKiImg } = doc.data()
             // console.log(postKiImg)
             document.getElementById('mainContainerPost').innerHTML += `
@@ -115,7 +120,7 @@ const getUserPost = async (userDetail) => {
                     <div class="function">
                         <div class="editPost"><button type="button" class="editPostBtn"><i
                                     class="fa-solid fa-ellipsis"></i></button></div>
-                        <div class="deletePost"><button type="button" class="deletePostBtn"><i
+                        <div class="deletePost"><button type="button" class="deletePostBtn" id="deleteBtn" onclick="deleteHandler(this, '${postUid}')"><i
                                     class="fa-solid fa-xmark"></i></button> </div>
                     </div>
                 </div>
@@ -140,3 +145,16 @@ const getUserPost = async (userDetail) => {
     }
 
 }
+
+async function deleteHandler(elem, postUidReceived) {
+    console.log(elem, postUidReceived);
+    console.log(elem.parentElement.parentElement.parentElement.parentElement);
+
+    console.log(postUidReceived, "delete chal raha hai");
+    return
+    await deleteDoc(doc(db, "posts", postUidReceived));
+    elem.parentElement.parentElement.parentElement.remove();
+    console.log("ura diya");
+}
+
+window.deleteHandler = deleteHandler;

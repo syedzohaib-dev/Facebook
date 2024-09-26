@@ -271,6 +271,7 @@
 .postTime {
     font-size: 0.85rem;
     font-weight: lighter;
+    overflow: hidden;
 }
 
 .function {
