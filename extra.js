@@ -285,10 +285,9 @@ const postShowingFunction = (postData, postUid) => {
           <div id="topArea">
             <div id="leftArea">
             <div id="profilePicture">
-              <img src=${
-                postData.authorDetails.img ||
-                "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-              } alt="">
+              <img src=${postData.authorDetails.img ||
+    "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+    } alt="">
             </div>
             <div id="section2">
               <p>${postData.authorDetails.name}</p>

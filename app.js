@@ -1,4 +1,7 @@
-import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs, deleteDoc } from './utils/firebase.js'
+import {
+    doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs, deleteDoc,
+    storage, ref, uploadBytesResumable, getDownloadURL
+} from './utils/firebase.js'
 let userDetail;
 let userImg;
 let userName;
@@ -70,6 +73,9 @@ inputBtn.addEventListener('click', async (e) => {
     e.preventDefault()
     let inputText = document.getElementById('inputText').value
     let inputUrl = document.getElementById('inputUrl').value
+    if (!inputText || !inputUrl) {
+        return alert("Plz Fill Out This Field")
+    }
     console.log(inputText, inputUrl, userDetail.uid, userImg, userName)
     let current = new Date()
     let localDate = current.toLocaleString()
@@ -119,7 +125,7 @@ const getUserPost = async (userDetail) => {
                         <div class="userName">
                             <p class="postCreater">${doc.data().userName}</p>
                             <p class="postTime">${doc.data().localDate}</p>
-                        </div>
+                        </div>  
                     </div>
                     <div class="function">
                         <div class="editPost"><button type="button" class="editPostBtn"><i
@@ -157,7 +163,7 @@ async function deleteHandler(elem, postUidReceived) {
     console.log(postUidReceived, "delete chal raha hai");
     // return
     try {
-        await deleteDoc(doc(db, "posts", postUidReceived));
+        await deleteDoc(doc(db, "users", userDetail.uid, "posts", postUidReceived));
         elem.parentElement.parentElement.parentElement.parentElement.remove();
         console.log("ura diya");
     } catch (error) {
@@ -168,3 +174,50 @@ async function deleteHandler(elem, postUidReceived) {
 }
 
 window.deleteHandler = deleteHandler;
+
+document.getElementById('uploadBtn').addEventListener('click', () => {
+    console.log('chala')
+
+    let uploadFile = document.getElementById('uploadFile')
+
+    console.log(uploadFile.files[0])
+
+    const storageRef = ref(storage, `images/${uploadFile.files[0].name}`);
+
+    const uploadTask = uploadBytesResumable(storageRef, uploadFile.files[0]);
+
+    // Register three observers:
+    // 1. 'state_changed' observer, called any time the state changes
+    // 2. Error observer, called on failure
+    // 3. Completion observer, called on successful completion
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+                case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                case 'running':
+                    console.log('Upload is running');
+                    break;
+            }
+        },
+        (error) => {
+            // Handle unsuccessful uploads
+            console.log(error)
+            console.log(error.message)
+
+        },
+        () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                console.log('File available at', downloadURL);
+            });
+        }
+    );
+
+})
