@@ -1,7 +1,9 @@
-import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs } from './utils/firebase.js'
+import { doc, getAuth, onAuthStateChanged, signOut, getDoc, db, setDoc, addDoc, collection, query, where, getDocs, deleteDoc } from './utils/firebase.js'
 let userDetail;
 let userImg;
 let userName;
+let postUid;
+let postUidReceived;
 
 const auth = getAuth();
 
@@ -97,7 +99,14 @@ const getUserPost = async (userDetail) => {
         const postsRef = collection(db, 'users', userDetail, 'posts');
         const querySnapShot = await getDocs(postsRef)
         querySnapShot.forEach((doc) => {
-            console.log(doc.data(), "Post ka data");
+            console.log(doc.data(), doc.id, "Post ka data");
+
+            postUid = doc.id
+            postUidReceived = doc.id
+
+            // postUid = userDetail
+            // console.log(postUid)
+
             // const { postKiImg } = doc.data()
             // console.log(postKiImg)
             document.getElementById('mainContainerPost').innerHTML += `
@@ -115,7 +124,7 @@ const getUserPost = async (userDetail) => {
                     <div class="function">
                         <div class="editPost"><button type="button" class="editPostBtn"><i
                                     class="fa-solid fa-ellipsis"></i></button></div>
-                        <div class="deletePost"><button type="button" class="deletePostBtn"><i
+                        <div class="deletePost"><button type="button" class="deletePostBtn" id="deleteBtn" onclick="deleteHandler(this, '${postUid}')"><i
                                     class="fa-solid fa-xmark"></i></button> </div>
                     </div>
                 </div>
@@ -140,3 +149,22 @@ const getUserPost = async (userDetail) => {
     }
 
 }
+
+async function deleteHandler(elem, postUidReceived) {
+    console.log(elem, postUidReceived);
+    console.log(elem.parentElement.parentElement.parentElement.parentElement);
+
+    console.log(postUidReceived, "delete chal raha hai");
+    // return
+    try {
+        await deleteDoc(doc(db, "posts", postUidReceived));
+        elem.parentElement.parentElement.parentElement.parentElement.remove();
+        console.log("ura diya");
+    } catch (error) {
+        console.log(error)
+        console.log(error.message)
+    }
+
+}
+
+window.deleteHandler = deleteHandler;
