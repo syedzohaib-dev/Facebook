@@ -156,7 +156,7 @@
 
 .postInput input {
     width: 85%;
-    height: 65%;
+    height: 55%;
     border-radius: 30px;
     padding-left: 10px;
     font-size: 1.2rem;
@@ -181,6 +181,17 @@
     cursor: pointer;
     background-color: #4e4e4e;
     color: white;
+}
+
+.inputBtn {
+    width: 100px;
+    height: 50px;
+    background-color: #eee4e4;
+    color: black;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+
 }
 
 /* post ka kaam yaha se shuru hoa hee  */
@@ -331,7 +342,8 @@
     background-color: #4e4e4e;
 
 }
-.deletePost:hover{
+
+.deletePost:hover {
     border: 1px solid white;
     border-radius: 50%;
     cursor: pointer;
