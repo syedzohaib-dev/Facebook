@@ -18,8 +18,8 @@ import {
   deleteDoc,
   setDoc,
 } from "../utils/firebase.js";
-import { getNameFromEmail } from "../utils/merayFunction.js";
-import { saveDataInFirebase } from "../utils2/firebase.js";
+// import { getNameFromEmail } from "../utils/merayFunction.js";
+// import { saveDataInFirebase } from "../utils2/firebase.js";
 
 let userDetails;
 let postIdToBeEdited;

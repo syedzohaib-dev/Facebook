@@ -199,7 +199,7 @@
 
 .post {
     width: 100%;
-    height: 650px;
+    height: 700px;
     /* border: 1px solid black; */
     border-radius: 10px;
     margin-bottom: 10px;
@@ -371,7 +371,7 @@
 
 .postImg {
     width: 100%;
-    height: 500px;
+    height: 550px;
     /* border: 1px solid white; */
     /* background-image: url('https://s.cafebazaar.ir/images/upload/screenshot/com.wallpaper3d.wallpaperhd.wallpaper4k.livewallpaper-daccb33c-53ba-4cd5-8d25-cfe6f23b11cb.jpeg?x-img=v1/resize,h_600,lossless_false/optimize'); */
     /* background-repeat: ; */
@@ -410,15 +410,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: white;
     gap: 5px;
     background-color: #4e4e4e;
+    cursor: pointer;
+
 
 }
 
 .likePost:hover {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .commentPost {
@@ -427,14 +429,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: white;
     gap: 5px;
     background-color: #4e4e4e;
+    cursor: pointer;
+
 }
 
 .commentPost:hover {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .sharePost {
@@ -443,13 +447,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: white;
     gap: 5px;
     background-color: #4e4e4e;
-
+    cursor: pointer;
 }
 
 .sharePost:hover {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
