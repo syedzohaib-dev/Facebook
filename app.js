@@ -245,15 +245,13 @@ window.deleteHandler = deleteHandler;
 
 function editHandler(elem, postUidReceived) {
     console.log(
-        elem.parentElement.parentElement//[0].innerHTML,
-        ,
+        elem.parentElement.parentElement.parentElement.parentElement.children[1].children[0].innerHTML,
         "edit chal raha hai"
     );
     document.querySelector("#updatePostBtn").style.display = "block";
     document.querySelector("#inputBtn").style.display = "none";
     document.querySelector("#inputText").value =
-        elem.parentElement.parentElement.nextElementSibling.children[0].innerHTML;
-    // postFetchFunction()
+        elem.parentElement.parentElement.parentElement.parentElement.children[1].children[0].innerHTML
     postIdToBeEdited = postUidReceived;
     console.log(postIdToBeEdited)
 }
@@ -263,6 +261,10 @@ document.querySelector("#updatePostBtn").addEventListener("click", (e) => {
     console.log("main chal raha hun");
     const inputText = document.querySelector("#inputText").value;
     const uploadFile = document.querySelector("#uploadFile");
+
+    if(!inputText || (!uploadFile.files || !uploadFile.files[0])){
+        return alert("All Field Are Required")
+    }
 
     const file = uploadFile.files[0];
 
@@ -307,11 +309,13 @@ document.querySelector("#updatePostBtn").addEventListener("click", (e) => {
             getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                 console.log("File available at", downloadURL);
                 downloadImageUrl = downloadURL;
-
+                let current = new Date()
+                let localDate = current.toLocaleString()
+                console.log(localDate)
                 try {
                     // Add a new document with a generated id.
 
-                    await addDoc(collection(db, "users", userDetail.uid, 'posts', postIdToBeEdited), {
+                    await setDoc(doc(db, "users", userDetail.uid, 'posts', postIdToBeEdited), {
                         inputText: inputText,
                         inputUrl: downloadURL,
                         localDate: localDate,
@@ -321,15 +325,7 @@ document.querySelector("#updatePostBtn").addEventListener("click", (e) => {
                     });
                     // 
 
-                    // const docRef = await setDoc(doc(db, "posts", postIdToBeEdited), {
-                    //   textData: textData.value,
-                    //   imgData: downloadImageUrl,
-                    //   authorDetails: {
-                    //     name: userDetails.firstName + " " + userDetails.lastName,
-                    //     img: userDetails.imgUrl || "",
-                    //     uid: userDetails.uid,
-                    //   },
-                    // });
+                    // getUserPost()
                     // postFetchFunction();
                 } catch (error) {
                     console.log(error, "==>> error bata raha hun");

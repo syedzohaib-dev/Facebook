@@ -6,6 +6,18 @@
     font-family: Arial;
 }
 
+#updatePostBtn {
+    display: none;
+    width: 100px;
+    height: 50px;
+    background-color: #eee4e4;
+    color: black;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+}
+
 /* Loder CSS */
 
 /* From Uiverse.io by PriyanshuGupta28 */
@@ -127,7 +139,7 @@
 
 .postInput {
     width: 100%;
-    height: 50%;
+    height: 40%;
     border-bottom: 1px solid black;
     display: flex;
     justify-content: space-evenly;
@@ -167,12 +179,17 @@
     outline: none;
 }
 
+.postInput input::placeholder {
+    color: white;
+}
+
 .postFile {
     width: 100%;
     height: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     cursor: pointer;
     background-color: #4e4e4e;
 }
@@ -191,6 +208,10 @@
     border-radius: 30px;
     font-size: 1.2rem;
     font-weight: bold;
+    border: none;
+    outline: none;
+    /* margin-top: 5px;
+    margin-bottom: 5px; */
 
 }
 
